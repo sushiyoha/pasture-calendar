@@ -20,7 +20,7 @@ const Scene: React.FC<SceneProps> = ({ items, tasksMap, onGridClick, selectedId 
       style={{ background: 'linear-gradient(to bottom, #f0f9ff, #dcfce7)' }}
     >
       {/* Fog: Pushed back so it doesn't wash out the immediate grid */}
-      <fog attach="fog" args={['#f0f9ff', 10, 50]} />
+      <fog attach="fog" args={['#f0f9ff', 2, 75]} />
       
       {/* Lighting: Hemisphere light creates natural outdoor shading without HDRI */}
       <hemisphereLight 
