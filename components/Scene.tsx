@@ -20,32 +20,32 @@ const Scene: React.FC<SceneProps> = ({ items, tasksMap, onGridClick, selectedId 
       style={{ background: 'linear-gradient(to bottom, #f0f9ff, #dcfce7)' }}
     >
       {/* Fog: Pushed back so it doesn't wash out the immediate grid */}
-      <fog attach="fog" args={['#f0f9ff', 25, 60]} />
+      <fog attach="fog" args={['#f0f9ff', 10, 50]} />
       
       {/* Lighting: Hemisphere light creates natural outdoor shading without HDRI */}
       <hemisphereLight 
         skyColor="#eff6ff" // Light blue sky
         groundColor="#dcfce7" // Light green ground bounce
-        intensity={0.7} 
+        intensity={0.6} 
       />
       
       {/* Main sun light */}
       <directionalLight 
         position={[10, 20, 10]} 
-        intensity={1.0} 
+        intensity={1.2} 
         castShadow 
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0001}
-        shadow-camera-left={-30}
-        shadow-camera-right={30}
-        shadow-camera-top={30}
-        shadow-camera-bottom={-30}
+        shadow-camera-left={-20}
+        shadow-camera-right={20}
+        shadow-camera-top={20}
+        shadow-camera-bottom={-20}
       />
       
       {/* Subtle fill */}
       <ambientLight intensity={0.2} />
       
-      <SoftShadows size={15} samples={16} focus={0.4} />
+      {/* <SoftShadows size={10} samples={16} focus={0.5} /> */}
 
       {/* Render the actual Grid content */}
       <CalendarGrid 
@@ -57,7 +57,7 @@ const Scene: React.FC<SceneProps> = ({ items, tasksMap, onGridClick, selectedId 
 
       {/* Floor to catch shadows outside the grid */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
-        <planeGeometry args={[200, 200]} />
+        <planeGeometry args={[100, 100]} />
         <meshStandardMaterial color="#dcfce7" />
       </mesh>
 
