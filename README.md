@@ -1,7 +1,7 @@
 # 点击该网址访问
 https://red-rock-0feb78b00.2.azurestaticapps.net/
 # 说明
-目前没有存储功能，所以一旦退出浏览器，所有事项会清空。<br>我用Gemini写的代码，然后下载了部署到github和azure上。<br>提示词：“Create a 3D interactive calendar web application with a 'Healing' and aesthetic visual style.
+新增注册功能，可以保存用户数据。<br>我用Gemini写的代码，然后下载了部署到github和azure上。<br>提示词：“Create a 3D interactive calendar web application with a 'Healing' and aesthetic visual style.
 1. Dynamic Grid System (View Modes):
 The user must define the view by selecting two units: a Major Unit (Container) and a Minor Unit (Grid Item). Options include: Year, Half-Year, Quarter, Month, Week, Day.
 Logic: The system should calculate the number of grids based on these units.
