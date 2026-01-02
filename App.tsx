@@ -2,13 +2,13 @@
 // import Scene from './components/Scene';
 // import ControlPanel from './components/UI/ControlPanel';
 // import TaskModal from './components/UI/TaskModal';
-// import AuthModal from './components/UI/AuthModal'; // 引入你的登录弹窗
+// import AuthModal from './components/UI/AuthModal';
 // import { TimeUnit, TasksMap, Task } from './types';
 // import { generateGridItems, getValidMinorUnits } from './services/timeService';
 // import { taskService } from './services/taskService';
 // import { supabase } from './services/supabaseClient';
 // import { nanoid } from 'nanoid';
-// import { Cloud, LogOut, User as UserIcon } from 'lucide-react'; // 引入图标
+// import { Cloud, LogOut, User as UserIcon } from 'lucide-react';
 
 // // Helper to parse Grid IDs
 // const parseKey = (key: string) => {
@@ -58,7 +58,6 @@
 //     try {
 //       const fetchedTasks = await taskService.fetchAll();
       
-//       // Transform flat list to Map structure: { [gridId]: Task[] }
 //       const newMap: TasksMap = {};
 //       fetchedTasks.forEach((t: any) => {
 //         const gId = t.gridId;
@@ -83,18 +82,15 @@
 
 //   // --- INIT: Auth Listener & Data Load ---
 //   useEffect(() => {
-//     // 1. Initial Load
 //     const init = async () => {
 //         const { data } = await supabase.auth.getUser();
 //         setUser(data.user);
-//         loadTasks(); // Load data based on current user (or guest)
+//         loadTasks(); 
 //     };
 //     init();
 
-//     // 2. Listen for Login/Logout events
 //     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
 //         setUser(session?.user ?? null);
-//         // If user logs in or out, reload data to switch between Guest/User sheep
 //         if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
 //             loadTasks();
 //         }
@@ -106,10 +102,8 @@
 //   }, [loadTasks]);
 
 //   // --- Handlers ---
-
 //   const handleLogout = async () => {
 //     await supabase.auth.signOut();
-//     // loadTasks will be triggered automatically by the listener above
 //   };
 
 //   const handleMajorChange = (newMajor: TimeUnit) => {
@@ -130,12 +124,10 @@
 //     setSelectedGridId(id === selectedGridId ? null : id);
 //   };
 
-//   // --- Task Operations (Optimistic Updates) ---
-
+//   // --- Task Operations ---
 //   const handleAddTask = async (title: string) => {
 //     if (!selectedGridId) return;
 
-//     // 1. Create a temporary task for instant UI feedback
 //     const tempId = nanoid();
 //     const tempTask: Task = {
 //       id: tempId,
@@ -144,17 +136,13 @@
 //       createdAt: Date.now()
 //     };
 
-//     // Optimistic Update
 //     setTasksMap(prev => ({
 //       ...prev,
 //       [selectedGridId]: [...(prev[selectedGridId] || []), tempTask]
 //     }));
 
 //     try {
-//       // 2. Save to Supabase
 //       const savedTask = await taskService.add(title, selectedGridId);
-
-//       // 3. Replace temp task with real task (with real DB ID)
 //       setTasksMap(prev => {
 //         const list = prev[selectedGridId] || [];
 //         return {
@@ -174,12 +162,9 @@
 
 //   const handleDeleteTask = async (taskId: string) => {
 //     let previousMap = { ...tasksMap };
-
-//     // Optimistic Delete
 //     setTasksMap(prev => {
 //       const newMap = { ...prev };
 //       let found = false;
-      
 //       for (const key in newMap) {
 //         const idx = newMap[key].findIndex(t => t.id === taskId);
 //         if (idx !== -1) {
@@ -196,18 +181,15 @@
 //       await taskService.delete(taskId);
 //     } catch (error) {
 //       console.error("Failed to delete", error);
-//       setTasksMap(previousMap); // Rollback
+//       setTasksMap(previousMap); 
 //     }
 //   };
 
 //   const handleToggleTask = async (taskId: string) => {
 //     let targetTask: Task | undefined;
-    
-//     // Optimistic Toggle
 //     setTasksMap(prev => {
 //       const newMap = { ...prev };
 //       let found = false;
-      
 //       for (const key in newMap) {
 //         const idx = newMap[key].findIndex(t => t.id === taskId);
 //         if (idx !== -1) {
@@ -249,9 +231,7 @@
 //         const gridInfo = parseKey(grid.id);
 //         const isWeek = grid.id.startsWith('w');
         
-//         if (tasksMap[grid.id]) {
-//             addUniqueTasks(grid.id, tasksMap[grid.id]);
-//         }
+//         if (tasksMap[grid.id]) addUniqueTasks(grid.id, tasksMap[grid.id]);
 
 //         (Object.entries(tasksMap) as [string, Task[]][]).forEach(([taskKey, tasks]) => {
 //             if (taskKey === grid.id) return;
@@ -303,7 +283,7 @@
 //         selectedId={selectedGridId} 
 //       />
 
-//       {/* Control Panel (Settings) */}
+//       {/* Control Panel */}
 //       <ControlPanel 
 //         major={majorUnit} 
 //         minor={minorUnit} 
@@ -311,10 +291,10 @@
 //         onMinorChange={handleMinorChange} 
 //       />
 
-//       {/* --- NEW: User / Login Button (Top Right) --- */}
+//       {/* --- Auth / User Button (Top Right) --- */}
 //       <div className="absolute top-4 right-4 z-10 animate-in fade-in slide-in-from-top-4 duration-500">
 //         {user ? (
-//           // Logged In State
+//           // 登录后：显示用户名和登出
 //           <div className="flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full shadow-xl border border-white/50">
 //             <div className="flex items-center gap-2 text-slate-600 border-r border-slate-300 pr-3 mr-1">
 //                <div className="bg-green-100 p-1 rounded-full text-green-600">
@@ -333,13 +313,18 @@
 //             </button>
 //           </div>
 //         ) : (
-//           // Guest State
+//           // 登录前：可展开的云朵图标按钮
 //           <button
 //             onClick={() => setShowAuthModal(true)}
-//             className="flex items-center gap-2 bg-white/70 backdrop-blur-md hover:bg-white px-4 py-2 rounded-full text-xs font-bold text-slate-600 hover:text-indigo-600 shadow-xl border border-white/50 transition-all active:scale-95 group"
+//             className="group flex items-center justify-center bg-white/70 backdrop-blur-md hover:bg-white p-2.5 rounded-full text-slate-600 hover:text-indigo-600 shadow-xl border border-white/50 transition-all duration-300 active:scale-95"
 //           >
-//             <Cloud size={16} className="text-indigo-500 group-hover:scale-110 transition-transform" />
-//             <span>Save Data</span>
+//             {/* 图标始终存在 */}
+//             <Cloud size={20} className="text-indigo-500 shrink-0" />
+            
+//             {/* 文字：利用 max-width 进行滑出动画 */}
+//             <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 group-hover:max-w-[100px] group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 text-xs font-bold">
+//               Save Data
+//             </span>
 //           </button>
 //         )}
 //       </div>
@@ -349,7 +334,7 @@
 //         <AuthModal 
 //           onClose={() => setShowAuthModal(false)} 
 //           onLoginSuccess={() => {
-//             // onAuthStateChange will handle the data reload
+//             // Data reloads via listener
 //           }} 
 //         />
 //       )}
@@ -385,7 +370,6 @@
 // };
 
 // export default App;
-
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Scene from './components/Scene';
@@ -683,35 +667,34 @@ const App: React.FC = () => {
       {/* --- Auth / User Button (Top Right) --- */}
       <div className="absolute top-4 right-4 z-10 animate-in fade-in slide-in-from-top-4 duration-500">
         {user ? (
-          // 登录后：显示用户名和登出
-          <div className="flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2 rounded-full shadow-xl border border-white/50">
-            <div className="flex items-center gap-2 text-slate-600 border-r border-slate-300 pr-3 mr-1">
-               <div className="bg-green-100 p-1 rounded-full text-green-600">
-                 <UserIcon size={14} />
-               </div>
-               <span className="text-xs font-semibold">
-                 {user.email?.split('@')[0]}
-               </span>
+          // 登录后：极简透明风格
+          <div className="group flex items-center bg-white/30 hover:bg-white/80 backdrop-blur-sm rounded-full p-2 transition-all duration-300 shadow-sm hover:shadow-lg border border-white/20 hover:border-white/50 cursor-default">
+            
+            {/* 头像 (Icon only, no background circle) */}
+            <UserIcon size={20} className="text-slate-600 group-hover:text-indigo-600 transition-colors shrink-0" />
+            
+            {/* 悬停展开内容 */}
+            <div className="max-w-0 overflow-hidden group-hover:max-w-[200px] flex items-center transition-all duration-500 ease-out opacity-0 group-hover:opacity-100">
+              <span className="text-xs font-semibold text-slate-600 px-2 whitespace-nowrap border-r border-slate-300/50 mx-1">
+                {user.email?.split('@')[0]}
+              </span>
+              <button 
+                onClick={handleLogout}
+                className="p-1 mr-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                title="Sign out"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
-            <button 
-              onClick={handleLogout}
-              className="text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1"
-              title="Logout"
-            >
-              <LogOut size={16} />
-            </button>
           </div>
         ) : (
-          // 登录前：可展开的云朵图标按钮
+          // 登录前：可展开的云朵图标按钮 (保持不变，或根据喜好调整)
           <button
             onClick={() => setShowAuthModal(true)}
-            className="group flex items-center justify-center bg-white/70 backdrop-blur-md hover:bg-white p-2.5 rounded-full text-slate-600 hover:text-indigo-600 shadow-xl border border-white/50 transition-all duration-300 active:scale-95"
+            className="group flex items-center justify-center bg-white/40 hover:bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-600 hover:text-indigo-600 shadow-sm hover:shadow-xl border border-white/30 transition-all duration-300 active:scale-95"
           >
-            {/* 图标始终存在 */}
-            <Cloud size={20} className="text-indigo-500 shrink-0" />
-            
-            {/* 文字：利用 max-width 进行滑出动画 */}
-            <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 group-hover:max-w-[100px] group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 text-xs font-bold">
+            <Cloud size={20} className="text-indigo-500/80 group-hover:text-indigo-600 shrink-0" />
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-[100px] group-hover:ml-2 transition-all duration-300 text-xs font-bold">
               Save Data
             </span>
           </button>
@@ -742,15 +725,15 @@ const App: React.FC = () => {
 
       {/* Loading Indicator */}
       {loading && (
-         <div className="absolute top-20 right-4 bg-white/70 backdrop-blur px-3 py-1 rounded-full border border-white/50 text-xs font-medium text-slate-500 flex items-center gap-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            Syncing...
+         <div className="absolute top-20 right-4 bg-white/30 backdrop-blur px-3 py-1 rounded-full text-xs font-medium text-slate-500 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            Loading...
          </div>
       )}
 
       {/* Footer Hint */}
       <div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none">
-        <span className="bg-white/60 backdrop-blur-md px-4 py-2 rounded-full text-xs font-medium text-slate-600 shadow-sm border border-white/40">
+        <span className="bg-white/40 backdrop-blur-md px-4 py-2 rounded-full text-xs font-medium text-slate-600 shadow-sm border border-white/20">
           Select a grass patch to add tasks. Zoom out to aggregate your sheep!
         </span>
       </div>
