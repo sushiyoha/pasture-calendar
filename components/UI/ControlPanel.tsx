@@ -139,7 +139,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ major, minor, onMajorChange
         "
         title="Open Settings"
       >
-        {/* Sun Icon: 尺寸调整为 20 以匹配 UserIcon，旋转动画保留 */}
+        {/* Sun Icon: 尺寸调整为 20 以匹配 UserIcon，旋转动画保留meow */}
         <Sun size={20} className="group-hover:rotate-45 transition-transform duration-500" />
       </button>
     );

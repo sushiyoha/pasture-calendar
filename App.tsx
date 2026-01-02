@@ -688,7 +688,7 @@ const App: React.FC = () => {
             </div>
           </div>
         ) : (
-          // 登录前：可展开的云朵图标按钮 (保持不变，或根据喜好调整)
+          // 登录前：可展开的云朵图标按钮 (保持不变，或根据喜好调整meow)
           <button
             onClick={() => setShowAuthModal(true)}
             className="group flex items-center justify-center bg-white/40 hover:bg-white/90 backdrop-blur-md p-2.5 rounded-full text-slate-600 hover:text-indigo-600 shadow-sm hover:shadow-xl border border-white/30 transition-all duration-300 active:scale-95"
