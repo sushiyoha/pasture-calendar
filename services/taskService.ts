@@ -103,11 +103,35 @@ export const taskService = {
     if (error) throw error;
   },
 
+  // toggle: async (taskId: string, isCompleted: boolean) => {
+  //   const { error } = await supabase
+  //     .from('tasks')
+  //     .update({ is_completed: isCompleted })
+  //     .eq('id', taskId);
+  //   if (error) throw error;
+  // }
+
+  // 替换原本的 toggle 函数
   toggle: async (taskId: string, isCompleted: boolean) => {
+    // 1. 先把这行任务的原始数据查出来
+    // (因为 Upsert 需要完整数据，否则可能会把标题弄丢)
+    const { data: originalTask, error: fetchError } = await supabase
+      .from('tasks')
+      .select('*')
+      .eq('id', taskId)
+      .single();
+
+    if (fetchError) throw fetchError;
+
+    // 2. 修改状态，然后用 .upsert() 塞回去
+    // Upsert 的本质是 POST 请求，完美避开 PATCH 报错
     const { error } = await supabase
       .from('tasks')
-      .update({ is_completed: isCompleted })
-      .eq('id', taskId);
+      .upsert({ 
+        ...originalTask,           // 保留原来的标题、grid_id、user_id 等
+        is_completed: isCompleted  // 只改这一项
+      });
+
     if (error) throw error;
   }
 };
